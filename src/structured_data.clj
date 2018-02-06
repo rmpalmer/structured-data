@@ -38,42 +38,79 @@
   (* (width rectangle) (height rectangle)))
 
 (defn contains-point? [rectangle point]
-  :-)
+  (let [[[x1 y1] [x2 y2]] rectangle
+        [px py] point]
+    (and (<= x1 px x2) (<= y1 py y2))))
 
-(defn contains-point? [[[x1 y1] [x2 y2]] [px py]]
-  (and (<= x1 px x2) (<= y1 py y2)))
+(contains-point? (rectangle (point 1 1) (point 9 17)) (point 5 5))
 
-  (and (contains-point? outer ll) (contains-point? outer ur)))
+(defn contains-rectangle? [outer inner]
+  (let [[ll ur] inner]
+    (and (contains-point? outer ll) (contains-point? outer ur))))
+
+(contains-rectangle? (rectangle (point 1 1) (point 9 17))
+                     (rectangle (point 3 2) (point 6 8)))
+
 
 (defn title-length [book]
-  :-)
+  (count (:title book)))
 
 (defn author-count [book]
-  :-)
+  (count (:authors book)))
 
 (defn multiple-authors? [book]
-  :-)
+  (if (> (author-count book) 1) true false))
 
 (defn add-author [book new-author]
-  :-)
+  (let [existing (:authors book)]
+    (assoc book :authors (conj existing new-author))))
+
+(def mybook {:title "Foo" :authors [(hash-map :name "Richard" :birth-year 1963)
+                                    (hash-map :name "Donald"  :birth-year 1962)]})
+
+(def yourbook {:title "Bar" :authors [(hash-map :name "Coco" :birth-year 2007)]})
+
+(author-count yourbook)
+(author-count mybook)
+(multiple-authors? mybook)
+
+(first (:authors mybook))
+
+(map :birth-year (:authors mybook))
+
 
 (defn alive? [author]
-  :-)
+  (not (contains? author :death-year)))
 
 (defn element-lengths [collection]
-  :-)
+  (seq (map count collection)))
+
+(element-lengths ["foo" "garbage" "jo"])
 
 (defn second-elements [collection]
-  :-)
+  (let [second (fn [x] (get x 1))]
+    (map second collection)))
+
+(second-elements [[1 2] [2 3] [3 4]]) ;=> (2 3 4)
+(second-elements [[1 2 3 4] [1] ["a" "s" "d" "f"]])
+
+(def bookshelf [mybook yourbook])
 
 (defn titles [books]
-  :-)
+  (map :title books))
+
+(titles bookshelf)
+
+(apply + [1 2 3])
 
 (defn monotonic? [a-seq]
-  :-)
+  (apply < a-seq))
+
+(monotonic? (range 3))
 
 (defn stars [n]
-  :-)
+  (apply str (repeat n "*")))
+
 
 (defn toggle [a-set elem]
   :-)
