@@ -107,18 +107,13 @@
 (defn titles [books]
   (map :title books))
 
-(titles bookshelf)
-
-(apply + [1 2 3])
-
 (defn monotonic? [a-seq]
-  (apply < a-seq))
-
-(monotonic? (range 3))
+  (let [non-descending (fn [x] (apply <= x))
+        non-ascending  (fn [x] (apply >= x))]
+    (or (non-ascending a-seq) (non-descending a-seq))))
 
 (defn stars [n]
   (apply str (repeat n "*")))
-
 
 (defn toggle [a-set elem]
   :-)
