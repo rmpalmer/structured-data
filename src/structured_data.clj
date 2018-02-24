@@ -134,8 +134,6 @@
 
 (clojure.set/union (set (map :authors bookshelf)))
 
-(authors bookshelf)
-
 (defn all-author-names [books]
   (set (map :name (authors books))))
 
@@ -154,13 +152,32 @@
 
 
 (defn authors->string [authors]
-  :-)
+  (apply str (interpose ", " (map author->string authors))))
+
+(authors->string (authors bookshelf))
+
+(def rmp {:name "Richard Palmer" :birth-year 1963 :death-year 2018})
+(def dgp {:name "Donald Palmer"})
+(def newbook {:title "Clojure" :authors [rmp dgp]})
+
+(def sequel {:title "More Clojure" :authors [rmp]})
 
 (defn book->string [book]
-  :-)
+  (str (:title book) ", written by " (authors->string (:authors book))))
+
+(def annex [newbook sequel])
 
 (defn books->string [books]
-  :-)
+  (let [cnt (count books)
+        ;;detail (fn [b] (str (book->string b)))
+        ;;all (fn [bs] (apply str (interpose ", " (map detail bs))))
+        details (fn [bs] (apply str (interpose ". " (map book->string bs))))]
+    (case cnt
+      0 "No books."
+      1 (str "1 book. " (details books) ".")
+      (str cnt " books. " (details books) "."))))
+
+(books->string annex)
 
 (defn books-by-author [author books]
   :-)
