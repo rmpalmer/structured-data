@@ -23,10 +23,12 @@
 (defn rectangle [bottom-left top-right]
   [bottom-left top-right])
 
-(rectangle (point 1 2) (point 9 10))
+(def foo (rectangle (point 1 2) (point 9 10)))
 
 (defn width [[[x1 _] [x2 _]]]
   (- x2 x1))
+
+(width foo)
 
 (defn height [[[_ y1] [_ y2]]]
   (- y2 y1))
@@ -63,12 +65,18 @@
 
 (defn add-author [book new-author]
   (let [existing (:authors book)]
-    (assoc book :authors (conj existing new-author))))
+    ( book :authors (conj existing new-author))))
 
-(def mybook {:title "Foo" :authors [(hash-map :name "Richard" :birth-year 1963)
+(def mybook {:title "Bar" :authors [(hash-map :name "Richard" :birth-year 1963)
                                     (hash-map :name "Donald"  :birth-year 1962)]})
 
+(mybook :authors)
+
 (def yourbook {:title "Bar" :authors [(hash-map :name "Coco" :birth-year 2007)]})
+
+(add-author mybook (hash-map :name "Roxanne" :birth-year 1968))
+
+(clojure.pprint/pprint mybook)
 
 (author-count yourbook)
 (author-count mybook)
@@ -83,7 +91,7 @@
   (not (contains? author :death-year)))
 
 (defn element-lengths [collection]
-  (seq (map count collection)))
+  (map count collection))
 
 (element-lengths ["foo" "garbage" "jo"])
 
