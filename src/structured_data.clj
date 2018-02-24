@@ -65,7 +65,7 @@
 
 (defn add-author [book new-author]
   (let [existing (:authors book)]
-    ( book :authors (conj existing new-author))))
+    (assoc book :authors (conj existing new-author))))
 
 (def mybook {:title "Bar" :authors [(hash-map :name "Richard" :birth-year 1963)
                                     (hash-map :name "Donald"  :birth-year 1962)]})
