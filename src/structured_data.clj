@@ -148,16 +148,13 @@
         name (fn [author] (:name author))]
     (str (name author) (if (have_dates author) (years author)))))
 
-(author->string {:name "Richard" :birth-year 1963 :death-year 2018})
-
-
 (defn authors->string [authors]
   (apply str (interpose ", " (map author->string authors))))
 
 (authors->string (authors bookshelf))
 
 (def rmp {:name "Richard Palmer" :birth-year 1963 :death-year 2018})
-(def dgp {:name "Donald Palmer"})
+(def dgp {:name "Donald Palmer" :birth-year 1962 :death-year 2017})
 (def newbook {:title "Clojure" :authors [rmp dgp]})
 
 (def sequel {:title "More Clojure" :authors [rmp]})
@@ -177,16 +174,23 @@
       1 (str "1 book. " (details books) ".")
       (str cnt " books. " (details books) "."))))
 
-(books->string annex)
-
 (defn books-by-author [author books]
-  :-)
+  (filter (fn accept [b] (has-author? b author)) books))
+
+(def stable [rmp dgp])
 
 (defn author-by-name [name authors]
-  :-)
+  (first (filter (fn accept [a] (= (:name a) name)) authors)))
 
 (defn living-authors [authors]
-  :-)
+  (filter alive? authors))
+
+(def jrrtolkien {:name "J. R. R. Tolkien" :birth-year 1892 :death-year 1973})
+(def christopher {:name "Christopher Tolkien" :birth-year 1924})
+(def kay {:name "Guy Gavriel Kay" :birth-year 1954})
+
+(def silmarillion {:title "Silmarillion"
+                   :authors #{jrrtolkien, christopher, kay}})
 
 (defn has-a-living-author? [book]
   :-)
