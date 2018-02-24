@@ -67,12 +67,12 @@
   (let [existing (:authors book)]
     (assoc book :authors (conj existing new-author))))
 
-(def mybook {:title "Bar" :authors [(hash-map :name "Richard" :birth-year 1963)
-                                    (hash-map :name "Donald"  :birth-year 1962)]})
+(def mybook {:title "Bar" :authors #{(hash-map :name "Richard" :birth-year 1963)
+                                    (hash-map :name "Donald"  :birth-year 1962)}})
 
 (mybook :authors)
 
-(def yourbook {:title "Bar" :authors [(hash-map :name "Coco" :birth-year 2007)]})
+(def yourbook {:title "Bar" :authors #{(hash-map :name "Coco" :birth-year 2007)}})
 
 (add-author mybook (hash-map :name "Roxanne" :birth-year 1968))
 
@@ -128,13 +128,30 @@
   (contains? (:authors book) author))
 
 (defn authors [books]
-  :-)
+  (let [auths (map :authors books)]
+    (apply clojure.set/union auths)))
+
+
+(clojure.set/union (set (map :authors bookshelf)))
+
+(authors bookshelf)
 
 (defn all-author-names [books]
-  :-)
+  (set (map :name (authors books))))
+
+(set (map :name (authors bookshelf)))
 
 (defn author->string [author]
-  :-)
+  (let [years (fn [author] (str " (" (:birth-year author) " - " (:death-year author) ")"))
+        not-nil (complement nil?)
+        have_dates (fn [author]
+                     (or (not-nil (:death-year author))
+                          (not-nil (:birth-year author))))
+        name (fn [author] (:name author))]
+    (str (name author) (if (have_dates author) (years author)))))
+
+(author->string {:name "Richard" :birth-year 1963 :death-year 2018})
+
 
 (defn authors->string [authors]
   :-)
